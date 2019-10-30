@@ -125,8 +125,14 @@ def mine():
     # get proof from request, validate it
     #! need one more param here, block_string ---- provided last_proof
     last_block = blockchain.last_block
-    last_proof = last_block['proof']
-    if blockchain.valid_proof(last_proof, rec_proof):
+
+    #     block_string = json.dumps(block, sort_keys=True).encode()
+    block_string = json.dumps(last_block, sort_keys=True).encode()
+    # block_string = blockchain.hash(last_block)
+    # previous_hash = blockchain.hash(blockchain.last_block)
+    # block = blockchain.new_block(rec_proof, previous_hash)
+
+    if blockchain.valid_proof(block_string, rec_proof):
         previous_hash = blockchain.hash(blockchain.last_block)
         block = blockchain.new_block(rec_proof, previous_hash)
         response = {
@@ -139,7 +145,7 @@ def mine():
         return jsonify(response), 200
     else:
         response = {
-            'message': 'Failure'
+            'message': 'Failure to Mine'
         }
         return jsonify(response), 400
 
@@ -156,6 +162,7 @@ def mine():
     #     'previous_hash': block['previous_hash'],
     # }
     # return jsonify(response), 200
+    #! ---------------------
 
 
 @app.route('/chain', methods=['GET'])
