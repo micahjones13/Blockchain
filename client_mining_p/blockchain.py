@@ -104,7 +104,9 @@ class Blockchain(object):
         guess = f'{block_string}{proof}'.encode()
         guess_hash = hashlib.sha256(guess).hexdigest()
         # return True or False
-        return guess_hash[:6] == "000000"
+        # turn down diff for testing
+        # return guess_hash[:6] == "000000"
+        return guess_hash[:3] == "000"
 
 
 # Instantiate our Node
@@ -129,11 +131,11 @@ def mine():
     #     block_string = json.dumps(block, sort_keys=True).encode()
     block_string = json.dumps(last_block, sort_keys=True).encode()
     # block_string = blockchain.hash(last_block)
-    # previous_hash = blockchain.hash(blockchain.last_block)
+    previous_hash = blockchain.hash(blockchain.last_block)
     # block = blockchain.new_block(rec_proof, previous_hash)
 
     if blockchain.valid_proof(block_string, rec_proof):
-        previous_hash = blockchain.hash(blockchain.last_block)
+        # previous_hash = blockchain.hash(blockchain.last_block)
         block = blockchain.new_block(rec_proof, previous_hash)
         response = {
             'message': "New Block Forged",
@@ -181,10 +183,7 @@ def home():
 
 @app.route('/last_block', methods=['GET'])
 def last_block():
-    response = {
-        'last_block': blockchain.last_block
-    }
-    return jsonify(response), 200
+    return jsonify(blockchain.last_block), 200
 
 
 # Run the program on port 5000
