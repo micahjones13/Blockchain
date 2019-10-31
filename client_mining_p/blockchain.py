@@ -105,8 +105,8 @@ class Blockchain(object):
         guess_hash = hashlib.sha256(guess).hexdigest()
         # return True or False
         # turn down diff for testing
-        # return guess_hash[:6] == "000000"
-        return guess_hash[:3] == "000"
+        return guess_hash[:6] == "000000"
+        # return guess_hash[:3] == "000"
 
 
 # Instantiate our Node
